@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extentreports>
+    <configuration>
+        <!-- report theme -->
+        <!-- standard, dark -->
+        <theme>standard</theme>
+
+        <!-- enables timeline -->
+        <!-- defaults to true -->
+        <enableTimeline>false</enableTimeline>
+
+        <!-- document encoding -->
+        <!-- defaults to UTF-8 -->
+        <encoding>UTF-8</encoding>
+
+        <!-- protocol for script and stylesheets -->
+        <!-- defaults to https -->
+        <protocol>https</protocol>
+
+        <!-- title of the document -->
+        <documentTitle>MyProject</documentTitle>
+
+        <!-- report name - displayed at top-nav -->
+        <!-- <reportName>Build 1</reportName> -->
+
+        <!-- custom javascript -->
+        <scripts>
+            <![CDATA[
+            	function setTopPadding(e) {
+            		e.setAttribute("style", "padding-top: 1.5%");
+            	}
+            	function setTopMargin(e) {
+            		e.setAttribute("style", "margin-top: -1.0%");
+            	}
+            	function setTextAreaTopMargin(e) {
+            		e.setAttribute("style", "margin-top: -1.1%; width: 600px; height: 130px");
+            	}
+				function setStyle(e) {
+            		$('.logo.logo-dark').removeAttr('style');
+					$('.logo.logo-dark').append("<img src='resources/logo.png' style='max-width: 69px;'>");
+
+					document.querySelectorAll('tbody > tr > td:nth-child(3)').forEach(setTopPadding);
+					document.querySelectorAll('tbody > tr > td:nth-child(3) > img').forEach(setTopMargin);
+					document.querySelectorAll('textarea').forEach(setTextAreaTopMargin);
+            	}
+
+            	window.openScreen = 0;
+				window.maxOpenScreen = 0;
+
+				function switchScreen(index) {
+					window.openScreen = index;
+					let src = $('div.test-content > * img.r-img[index="' + window.openScreen + '"]').attr("src");
+					$('.featherlight-image.featherlight-inner').attr("src", src);
+				};
+
+				function loadIndexes() {
+					let images = $('div.test-content > * img.r-img').map(function(index) {
+						$(this).attr("index", index); // Add index
+						// On screenshot click save the index
+						$(this).on("click", function() { window.openScreen = index; });
+						window.maxOpenScreen = index;
+						return $(this);
+					});
+				}
+
+				document.addEventListener('keydown', function(event){
+					switch (event.keyCode) {
+					// Right and left
+					case 39:
+						if(window.openScreen != window.maxOpenScreen) switchScreen(window.openScreen + 1);
+						break;
+					case 37:
+						if(window.openScreen != 0) switchScreen(window.openScreen - 1);
+						break;
+					// Up and down
+					case 38:
+						switchScreen(0); // To first
+						break;
+					case 40:
+						switchScreen(window.maxOpenScreen); // To last
+						break;
+					}
+				});
+
+                $(document).ready(function() {
+
+					// Reload indexes on test change
+					$(".test-item").on("click", loadIndexes);
+
+					// First index load
+					loadIndexes();
+					setStyle();
+                });
+            ]]>
+        </scripts>
+
+        <!-- custom styles -->
+        <!-- .code-block { float: right; width: 90%; } -->
+        <styles>
+            <![CDATA[
+            	img.r-img { width: 10% }
+                .r-img { width: 20%; float: right; margin-right: 10px; margin-top: 0px; box-shadow: 0px 0px 5px black; }
+
+            ]]>
+        </styles>
+    </configuration>
+</extentreports>

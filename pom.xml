@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>concept.automix</groupId>
+    <artifactId>siae</artifactId>
+    <version>1.1-SNAPSHOT</version>
+
+    <properties>
+        <!-- Java Versions -->
+        <target.version>11</target.version>
+        <source.version>11</source.version>
+
+        <!-- Misc configuration -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>${target.version}</maven.compiler.target>
+        <maven.compiler.source>${source.version}</maven.compiler.source>
+
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+
+        <automix.version>3.0.2-RETAIL-LITE</automix.version>
+        <appium.version>8.6.0</appium.version>
+        <browserstack-java-sdk.version>LATEST</browserstack-java-sdk.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>repo</id>
+            <name>Concept Reply TA Maven Repository</name>
+            <url>http://cnctagit.replynet.prv:8081/</url>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>main</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                    <version>2.1.0-alpha1</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                    <version>4.13.0</version>
+                </dependency>
+                <!-- Concept Automation Automix -->
+                <dependency>
+                    <groupId>concept.automation</groupId>
+                    <artifactId>automix</artifactId>
+                    <version>${automix.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.seleniumhq.selenium</groupId>
+                            <artifactId>selenium-http-jdk-client</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <!-- Appium -->
+                <dependency>
+                    <groupId>io.appium</groupId>
+                    <artifactId>java-client</artifactId>
+                    <version>${appium.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.googlecode.json-simple</groupId>
+                    <artifactId>json-simple</artifactId>
+                    <version>1.1.1</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.browserstack</groupId>
+                    <artifactId>browserstack-java-sdk</artifactId>
+                    <version>${browserstack-java-sdk.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <!--
+        <resources>
+            <resource>
+                <directory></directory>
+            </resource>
+        </resources>
+        -->
+        <plugins>
+            <!-- Make this jar executable -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>
+                                        main.Main
+                                    </mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>SIAE_TA</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-browserstack-java-sdk</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.browserstack</groupId>
+                                    <artifactId>browserstack-java-sdk</artifactId>
+                                    <version>${browserstack-java-sdk.version}</version>
+                                    <outputDirectory>${project.build.directory}</outputDirectory>
+                                    <destFileName>browserstack-java-sdk.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${source.version}</source>
+                    <target>${target.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

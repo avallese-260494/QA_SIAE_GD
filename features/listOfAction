@@ -1,0 +1,77 @@
+
+(\\w+).(\\w+) should be present
+I click (\\w+).(\\w+)
+
+ViewingRoutesSteps
+@And(value="^I check that the routes (\\w+).(\\w+) are displayed correctly$")
+@And(value="^I verify that the route cards report the \"(.+)\" data$")
+@And(value="^I verify that the route cards report the address after the label \"(.+)\"$")
+@And(value="^I verify that the route card contains the map button (\\w+).(\\w+)$")
+@And(value="routes detail page elements are displayed properly")
+@And(value="I deselect all the general filters")
+@And(value="all the general filters show the proper results")
+@And(value="I check if I can take on an available route")
+@And(value="I search for a validated local from the route list and select it")
+@Then(value="^all data sections of the \"(.+)\" profile are present$")
+@And(value="^I check that the filter (\\w+).(\\w+) is working properly$")
+@And(value="^if reporting type is not selected (\\w+).(\\w+) should not be present$")
+@And(value="^I check that there are stars (\\w+).(\\w+) to rate the experience$")
+
+LoginSteps
+@Given(value="^I log in with the credentials of the \"(.+)\" user and I check the list of districts$")
+@Given(value="^I log in with the credentials of the \"(.+)\" user$")
+@And(value="I check if the pop up appears properly")
+@And(value="I enter the credentials of the {string} user without signing in")
+@And(value="^(\\w+).(\\w+) should be empty$")
+
+GeneralStep
+@And(value="^I wait until (\\w+).(\\w+) is visible$")
+@And(value="^I wait until (\\w+).(\\w+) is present$")
+@And(value="^I wait until (\\w+).(\\w+) disappear$")
+@Then(value="^I put a breakpoint$")
+@And(value="^I tap by coordinates (\\d+),(\\d+)$")
+@And(value="^I wait until element (\\w+).(\\w+) is displayed$")
+@And(value="^I clear (\\w+).(\\w+) field$")
+@And(value="^I check that (\\w+).(\\w+) contains text \"(.+)\"$")
+@And(value="^I tap on element (\\w+).(\\w+)$")
+@And(value="^I check whether the checkbox (\\w+).(\\w+) is checked$")
+@And(value="^I click checkbox (\\w+).(\\w+) if is not checked$")
+@And(value="^I tap on left side of (\\w+).(\\w+)$")
+@And(value="^I (\\w+)\\.(\\w+) click if present$")
+@And(value="^I close the keyboard if it is open$")
+@And(value="^I press back button for android$")
+
+LocalDetailPageSteps
+@And(value="^I remember (\\w+).(\\w+) local data$")
+@And(value="I check if all the local detail page elements are displayed properly")
+@And(value="^I check the functionality of (\\w+).(\\w+)$")
+@And(value="I click the first local")
+
+OfflineSteps
+@And(value="I turn off data connection")
+@And(value="the offline mode popup should be present")
+@And(value="I turn on data connection")
+
+ReportPageSteps
+@And(value="^I write \"(.+)\" in the search box (\\w+).(\\w+)$")
+@And(value="^I write address \"(.+)\" in the search box (\\w+).(\\w+)$")
+@And(value="^I check the automatic filling of the field (\\w+).(\\w+)$")
+@And(value="^I fill in the fields on the \"(.+)\" page$")
+@And(value="^if the drop-down menu (\\w+).(\\w+) is not filled in, I check there is (\\w+).(\\w+) error message$")
+@And(value="^I count the number of items in the device list (\\w+).(\\w+)$")
+@And(value="I save the number of device buttons in the list")
+@And(value="I verify that the number of device buttons has reduced")
+@And(value="^if it is not filled in, I fill in the dropdown menu (\\w+).(\\w+)$")
+@And(value="^if it is not filled in, I fill in the field (\\w+).(\\w+)$")
+@And(value="^I clear (\\w+).(\\w+) field if filled in$")
+@And(value="^if the country of (\\w+).(\\w+) is not Italy, then I select it$")
+@And(value="^I remember (\\w+).(\\w+) field data of \"(.+)\" page$")
+@And(value="^I check the summary for the (\\w+).(\\w+) field of \"(.+)\" section$")
+@And(value="^I check that there are all types of devices$")
+@And(value="^I deselect devices if already selected$")
+
+ScrollSteps
+@And(value="^I scroll down until (\\w+).(\\w+) is displayed$")
+@And(value="^I scroll up until (\\w+).(\\w+) is displayed$")
+@And(value="^I scroll down element (\\w+).(\\w+) until (\\w+).(\\w+) is displayed")
+@And(value="^I scroll up element (\\w+).(\\w+) until (\\w+).(\\w+) is displayed")

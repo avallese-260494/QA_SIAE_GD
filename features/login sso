@@ -1,0 +1,18 @@
+click bottone //android.widget.Button[@text="SIAE-SSO"]
+
+compare schermata accedi microsoft
+
+inserire email in  //android.widget.EditText[@resource-id="i0116"]
+
+cliccare bottone //android.widget.Button[@resource-id="idSIButton9"]
+
+si carica
+
+compare ADFS SIAE
+
+inserire passord in //android.widget.EditText[@resource-id="passwordInput"]
+
+cliccare accedi //android.widget.TextView[@resource-id="submitButton"]
+
+
+e ora so cazzi microsoft autenticator appare e addio

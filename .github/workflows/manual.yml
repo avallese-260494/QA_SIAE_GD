@@ -1,0 +1,106 @@
+name: Run Executor and JAR
+
+on:
+  workflow_dispatch:
+    inputs:
+      CYCLE_NAME:
+        description: "Cycle name to pass to setup.py"
+        required: true
+        default: "SIAE Accertatori"
+      MOBILE_OS:
+        description: "Mobile OS to pass to setup.py and JAR command"
+        required: true
+        default: "ANDROID"
+      APP_PATH:
+        description: "New app file"
+        required: true
+        default: "app_60.apk"
+      District:
+        description: "Log in District"
+        required: true
+        default: "1204906"
+      FeaturesTest:
+        description: "ALL or specific a single test"
+        required: true
+        default: "ALL"
+      JAR:
+        description: "siae jar"
+        required: true
+        default: "siae-1.1-SNAPSHOT_SYTEL.jar"
+
+jobs:
+  execute-pipeline:
+    runs-on: windows-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: 'BrowserStack Env Setup'
+        uses: 'browserstack/github-actions/setup-env@master'
+        with:
+          username: ${{ secrets.BS_USER }}
+          access-key: ${{ secrets.BS_TOKEN }}
+
+      # Install Java 11
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin' # Può essere anche 'zulu', 'adopt', ecc.
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Display Maven settings with PowerShell
+        shell: pwsh
+        run: Get-Content 'C:\Users\runneradmin\.m2\settings.xml'
+
+      # Install dependencies if needed (e.g., dependencies for setup.py)
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # Run the Python script
+      - name: Run setup.py
+        env:
+          CYCLE_NAME: ${{ inputs.CYCLE_NAME }}
+          MOBILE_OS: ${{ inputs.MOBILE_OS }}
+          BS_TOKEN: ${{ secrets.BS_TOKEN }}
+          BS_USER: ${{ secrets.BS_USER }}
+          APP_PATH: ${{ inputs.APP_PATH }}
+          District: ${{ inputs.District }}
+        run: |
+          python setup.py
+
+      - name: Install Automix
+        run: mvn -e install:install-file "-Dfile=automix-3.0.2-RETAIL-LITE.jar" "-DpomFile=automix-pom.xml"
+
+      - name: Install dependencies
+        run: mvn -q -P main install
+
+      - name: Run tests
+        env:
+          MOBILE_OS: ${{ inputs.MOBILE_OS }}
+          FeaturesTest: ${{ inputs.FeaturesTest }}
+          District: ${{ inputs.District }}
+          BS_TOKEN: ${{ secrets.BS_TOKEN }}
+          BS_USER: ${{ secrets.BS_USER }}
+          JAR: ${{ inputs.JAR }}
+          Capability: Android
+          Environment: PreProd
+          Market: IT
+          Project: Siae
+        run: python -u runner.py
