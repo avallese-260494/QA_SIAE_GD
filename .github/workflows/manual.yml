@@ -31,30 +31,28 @@ on:
 jobs:
   execute-pipeline:
     runs-on: windows-latest
+    env:
+      BS_USER: ${{ secrets.BS_USER }}
+      BS_TOKEN: ${{ secrets.BS_TOKEN }}
+      CYCLE_NAME: ${{ inputs.CYCLE_NAME }}
+      MOBILE_OS: ${{ inputs.MOBILE_OS }}
+      APP_PATH: ${{ inputs.APP_PATH }}
+      District: ${{ inputs.District }}
 
     steps:
-      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: 'BrowserStack Env Setup'
-        uses: 'browserstack/github-actions/setup-env@master'
-        with:
-          username: ${{ secrets.BS_USER }}
-          access-key: ${{ secrets.BS_TOKEN }}
-
-      # Install Java 11
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin' # Può essere anche 'zulu', 'adopt', ecc.
+          distribution: 'temurin'
 
       - name: Cache local Maven repository
         uses: actions/cache@v4
@@ -68,22 +66,18 @@ jobs:
         shell: pwsh
         run: Get-Content 'C:\Users\runneradmin\.m2\settings.xml'
 
-      # Install dependencies if needed (e.g., dependencies for setup.py)
       - name: Install Python dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
-      # Run the Python script
-      - name: Run setup.py
-        env:
-          CYCLE_NAME: ${{ inputs.CYCLE_NAME }}
-          MOBILE_OS: ${{ inputs.MOBILE_OS }}
-          BS_TOKEN: ${{ secrets.BS_TOKEN }}
-          BS_USER: ${{ secrets.BS_USER }}
-          APP_PATH: ${{ inputs.APP_PATH }}
-          District: ${{ inputs.District }}
+      - name: Debug Environment Variables
         run: |
-          python setup.py
+          echo "BS_USER=$BS_USER"
+          echo "BS_TOKEN=${BS_TOKEN:0:4}****"
+          echo "APP_PATH=$APP_PATH"
+          echo "CYCLE_NAME=$CYCLE_NAME"
+
+      - name: Run setup.py
+        run: python setup.py
 
       - name: Install Automix
         run: mvn -e install:install-file "-Dfile=automix-3.0.2-RETAIL-LITE.jar" "-DpomFile=automix-pom.xml"
