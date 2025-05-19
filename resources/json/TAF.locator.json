@@ -1510,7 +1510,7 @@
     "selectors": [
       {
         "name": "filtersButton",
-        "xpath": "//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.widget.ImageView",
+        "xpath": "//android.widget.ImageView[@index='1']",
         "status": "TBD",
         "visible": false,
         "enabled": false,
