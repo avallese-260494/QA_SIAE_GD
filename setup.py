@@ -30,12 +30,18 @@ def push_app(app_path):
         'Authorization': generate_basic_auth_header(username,token)
     }
 
-    response = requests.request("POST", url, headers=headers, data=payload, files=files)
-    print(response)
-    data = json.loads(response.text)
-    app_url=data['app_url']
-    print(app_url)
-    return app_url
+   response = requests.request("POST", url, headers=headers, data=payload, files=files)
+
+print("Status code:", response.status_code)
+print("Response body:", response.text)  # 👈 Aggiunto per capire l'errore
+
+if response.status_code != 200:
+    raise Exception("Upload fallito su BrowserStack")
+
+data = json.loads(response.text)
+app_url = data['app_url']
+print(app_url)
+return app_url
 
 
 
