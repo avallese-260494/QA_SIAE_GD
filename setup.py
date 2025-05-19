@@ -17,7 +17,7 @@ def generate_basic_auth_header(username, password):
     return f"Basic {encoded_value}"
 
 def push_app(app_path):
-    #return "bs://da7dff5e49f56eded3932b2ffaedade0746e25b0" #  temporary
+    # return "bs://da7dff5e49f56eded3932b2ffaedade0746e25b0"  # temporary
     username = os.environ["BS_USER"]
     token = os.environ["BS_TOKEN"]
     url = "https://api-cloud.browserstack.com/app-automate/upload"
@@ -27,13 +27,13 @@ def push_app(app_path):
         ('file', (app_path, open(app_path, 'rb'), 'application/octet-stream'))
     ]
     headers = {
-        'Authorization': generate_basic_auth_header(username,token)
+        'Authorization': generate_basic_auth_header(username, token)
     }
 
-   response = requests.request("POST", url, headers=headers, data=payload, files=files)
+    response = requests.request("POST", url, headers=headers, data=payload, files=files)
 
     print("Status code:", response.status_code)
-    print("Response body:", response.text)  # 👈 Aggiunto per capire l'errore
+    print("Response body:", response.text)
 
     if response.status_code != 200:
         raise Exception("Upload fallito su BrowserStack")
@@ -42,12 +42,6 @@ def push_app(app_path):
     app_url = data['app_url']
     print(app_url)
     return app_url
-
-
-
-
-
-
     #
     # body = {
     #     "networkProfile": "no-network" if offline else "4g-lte-good"
