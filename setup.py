@@ -32,16 +32,16 @@ def push_app(app_path):
 
    response = requests.request("POST", url, headers=headers, data=payload, files=files)
 
-print("Status code:", response.status_code)
-print("Response body:", response.text)  # 👈 Aggiunto per capire l'errore
+    print("Status code:", response.status_code)
+    print("Response body:", response.text)  # 👈 Aggiunto per capire l'errore
 
-if response.status_code != 200:
-    raise Exception("Upload fallito su BrowserStack")
+    if response.status_code != 200:
+        raise Exception("Upload fallito su BrowserStack")
 
-data = json.loads(response.text)
-app_url = data['app_url']
-print(app_url)
-return app_url
+    data = json.loads(response.text)
+    app_url = data['app_url']
+    print(app_url)
+    return app_url
 
 
 
