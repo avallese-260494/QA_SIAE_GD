@@ -1588,7 +1588,7 @@
       },
       {
         "name": "generalFilters",
-        "xpath": "//android.widget.ImageView[@index='1']",
+        "xpath": "//android.view.View/android.view.View[2]/android.widget.ImageView",
         "status": "TBD",
         "visible": false,
         "enabled": false,
