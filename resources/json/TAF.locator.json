@@ -1679,7 +1679,7 @@
       },
       {
         "name": "generalFiltersHeader",
-        "xpath": "//android.view.View[@content-desc=\"Filtri generali\"]",
+        "xpath": "//android.widget.ImageView[@index='1']",
         "status": "TBD",
         "visible": false,
         "enabled": false,
